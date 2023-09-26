@@ -2,6 +2,7 @@
 data("hhgeo_dt")
 data("shp_dt")
 
+#load sample data for R-User
 df <- geolink_chirps(time_unit = "month",
                      start_date = "2020-01-01",
                      end_date = "2020-03-01",
@@ -12,10 +13,11 @@ df <- geolink_chirps(time_unit = "month",
                      survey_dt = hhgeo_dt,
                      extract_fun = "mean")
 
-#stata example
+#stata example- if null, will read_sf into shp_dt but doing here to be able to shorten the file
 shp_fn= "/Users/chaseyoung/Desktop/GeoLink/data-raw/shapefiles/nga_admbndp_admALL_osgof_eha_itos_20190417.shp"
 shp_dt <- sf::read_sf(shp_fn)
 
+#sample for stata user. Survey.dta as points
 df2<- geolink_chirps(time_unit = "month",
                      start_date = "2020-01-01",
                      end_date = "2020-03-01",
@@ -28,7 +30,7 @@ df2<- geolink_chirps(time_unit = "month",
                      extract_fun = "mean")
 
 
-
+#R-tests
 test_that("sample data is correctly loaded", {
   expect_equal(hhgeo_dt[1:1]$hhid,10001)
   expect_equal(shp_dt$ADM0_PCODE[1],"NG")
@@ -43,6 +45,7 @@ test_that("sample works for R-user)", {
   expect_equal(df$poly_id[10], 1063)
 })
 
+#error checks
 test_that("code gives expected errors)", {
   #test if time_unit is null
   expect_error(geolink_chirps(time_unit = "null",
@@ -78,7 +81,7 @@ test_that("code gives expected errors)", {
 
 })
 
-##question is it the survey or the data?  survey frim
+#stata tests
 test_that("sample works for Stata User", {
   expect_equal(df2$dist_road2[1], 1.1)
   expect_equal(df2$af_bio_13[2], 320)
