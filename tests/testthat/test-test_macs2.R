@@ -13,6 +13,17 @@ df <- geolink_chirps(time_unit = "month",
                      survey_dt = hhgeo_dt,
                      extract_fun = "mean")
 
+#try annual sample
+df3<- geolink_chirps(time_unit = "annual",
+                     start_date = "2020-01-01-01",
+                     end_date = "2021-01-01",
+                     shp_dt = shp_dt[shp_dt$ADM1_PCODE == "NG001", ],
+                     grid = TRUE,
+                     grid_size = 1000,
+                     use_survey = TRUE,
+                     survey_dt = hhgeo_dt,
+                     extract_fun = "mean")
+
 #stata example- if null, will read_sf into shp_dt but doing here to be able to shorten the file
 shp_fn= "/Users/chaseyoung/Desktop/GeoLink/data-raw/shapefiles/nga_admbndp_admALL_osgof_eha_itos_20190417.shp"
 shp_dt <- sf::read_sf(shp_fn)
@@ -28,7 +39,6 @@ df2<- geolink_chirps(time_unit = "month",
                      survey_lat= "lat_dd_mod",
                      survey_lon= "lon_dd_mod",
                      extract_fun = "mean")
-
 
 #R-tests
 test_that("sample data is correctly loaded", {
@@ -68,6 +78,7 @@ test_that("code gives expected errors)", {
                               use_survey = TRUE,
                               survey_dt = hhgeo_dt,
                               extract_fun = "mean"), "Invalid time range, start time exceeds end time!", fixed= TRUE)
+
   #test if date is formatted wrongly as year/day/month
   expect_error(geolink_chirps(time_unit = "null",
                               start_date = "2020-31-01",
@@ -81,6 +92,7 @@ test_that("code gives expected errors)", {
 
 })
 
+
 #stata tests
 test_that("sample works for Stata User", {
   expect_equal(df2$dist_road2[1], 1.1)
@@ -90,3 +102,5 @@ test_that("sample works for Stata User", {
   expect_equal(df2$geoID[9], 1063)
   expect_equal(df2$poly_id[10], 1063)
 })
+
+#next round of test make new data file and look at others errors
