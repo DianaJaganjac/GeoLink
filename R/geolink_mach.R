@@ -116,7 +116,7 @@ geolink_chirps <- function(time_unit,
 
   dt <- postdownload_processor(shp_dt = shp_dt,
                                raster_objs = raster_objs,
-                               shp_fn = shp_dt,
+                               shp_fn = shp_fn,
                                grid_size = grid_size,
                                survey_dt = survey_dt,
                                survey_fn = survey_fn,

@@ -322,8 +322,10 @@ postdownload_processor <- function(raster_objs,
 
   if (!missing(survey_dt)) {
 
-    survey_dt <- st_transform(x = survey_dt,
-                              crs = st_crs(shp_dt)$wkt)
+    return(survey_dt)
+
+    survey_dt <- st_transform(survey_dt,
+                              crs = st_crs(raster_objs[[1]])$input)
 
     survey_dt <- st_join(survey_dt, shp_dt)
 
