@@ -322,6 +322,7 @@ postdownload_processor <- function(raster_objs,
 
   if (!missing(survey_dt)) {
 
+    ##fix for survey_dt error
     return(survey_dt)
 
     survey_dt <- st_transform(survey_dt,
