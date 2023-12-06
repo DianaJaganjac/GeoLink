@@ -39,6 +39,7 @@ download_reader <- function(url,
                             ...) {
 
   ext <- paste0(".", tools::file_ext(url))
+  options(timeout=400)
 
   temp_file <- tempfile(fileext = ext)
 

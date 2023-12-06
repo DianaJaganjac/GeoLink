@@ -8,5 +8,5 @@
 
 library(testthat)
 library(GeoLink)
-
 test_check("GeoLink")
+
