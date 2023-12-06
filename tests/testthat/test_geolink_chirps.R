@@ -1,9 +1,10 @@
-#Load the data that is used for testing
+#Step 1 call the data that is used for testing
 data("hhgeo_dt")
 data("shp_dt")
 
-#load sample data for R-User
-df <- geolink_chirps(time_unit = "month",
+#Step 2: load the monthly data from Chirps:
+print("getting testing data from CHIRPS")
+geolink_chirps(time_unit = "month",
                      start_date = "2020-01-01",
                      end_date = "2020-03-01",
                      shp_dt = shp_dt[shp_dt$ADM1_PCODE == "NG001", ],
@@ -11,7 +12,7 @@ df <- geolink_chirps(time_unit = "month",
                      survey_dt = hhgeo_dt,
                      extract_fun = "mean")
 
-#try annual sample
+#Step 3: load the annual data from chirps:
 df2<- geolink_chirps(time_unit = "annual",
                      start_date = "2020-01-01-01",
                      end_date = "2021-01-01",
@@ -20,7 +21,26 @@ df2<- geolink_chirps(time_unit = "annual",
                      survey_dt = hhgeo_dt,
                      extract_fun = "mean")
 
-#R-tests
+#Step 4: Run Tests for Expected Output
+#check shp_dt was correctly loaded
+#Variables in shp_dt: ADM2P_CODE for Arochukwu is NG001003 in Abia
+
+#Hhgeo_dt:
+##for HHID 19010: dist-pop center= 1
+# for 19104: Pop density= 10700
+# for 10010, NVDI Max= .540
+
+#check if chirps data is added correctly: where is Chirps data added back in?
+
+#mean or rainfall for chirps variable
+
+
+
+
+#Step 5: Create pathways for possible errors
+
+
+
 test_that("sample data is correctly loaded", {
   expect_equal(hhgeo_dt[1:1]$hhid,10001)
   expect_equal(shp_dt$ADM0_PCODE[1],"NG")

@@ -184,7 +184,6 @@ compute_zonalstats <- function(shp_dt,
   ### reproject shapefile to match raster CRS if they are not the same
   print("Extracting raster/vector data into shapefile")
 
-
   shp_dt <-
     mapply(FUN = function(x, n){
       ### first ensure raster and shapefile have the same crs
@@ -195,11 +194,11 @@ compute_zonalstats <- function(shp_dt,
                                                   fun = extract_fun)
 
       return(shp_dt)
-
     },
     SIMPLIFY = FALSE,
     x = raster_objs,
     n = name_set)
+
 
   if (length(shp_dt) > 1L) {
 
@@ -211,6 +210,7 @@ compute_zonalstats <- function(shp_dt,
                        return(X)
 
                      })
+
 
     geoid_dt <- shp_dt[[1]][, c("geoID")]
 
@@ -225,11 +225,13 @@ compute_zonalstats <- function(shp_dt,
 
                      })
 
-    shp_dt <- Reduce(merge, shp_dt)
+    #This reduce function was making shp_dt null
+    #shp_dt <- Reduce(merge, shp_dt)
 
     shp_dt <- merge(shp_dt, geoid_dt, by = "geoID")
 
     shp_dt <- st_as_sf(shp_dt, crs = shp_crs, agr = "constant")
+
 
   } else if (length(shp_dt) == 1L){
 
@@ -260,20 +262,21 @@ postdownload_processor <- function(raster_objs,
                                    extract_fun = "mean",
                                    buffer_size = NULL,
                                    survey_crs = 4326,
-                                   name_set,
+                                   name_set= name_set,
                                    shp_dt,
                                    shp_fn = NULL,
                                    grid_size = 1000){
-
 
   #### ------ create the required survey and shapefile frames ------- ####
 
   if (!is.null(shp_fn)) {
     shp_dt <- zonalstats_prepshp(shp_fn = shp_fn,
                                  grid_size = grid_size)
-  } else if (!missing(shp_dt)){
+
+      } else if (!missing(shp_dt)){
     shp_dt <- zonalstats_prepshp(shp_dt = shp_dt,
                                  grid_size = grid_size)
+
   }
 
 
@@ -317,6 +320,9 @@ postdownload_processor <- function(raster_objs,
                                  extract_fun = extract_fun,
                                  name_set = name_set)
 
+    return(shp_dt)
+
+
   }
 
 
@@ -333,8 +339,6 @@ postdownload_processor <- function(raster_objs,
     return(survey_dt)
 
   }
-
-  return(shp_dt)
 
 }
 

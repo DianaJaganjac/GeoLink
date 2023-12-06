@@ -66,12 +66,13 @@
 
 
 
-geolink_chirps <- function(time_unit,
+geolink_chirps <- function(time_unit= "annual",
                            start_date,
                            end_date,
                            shp_dt,
                            shp_fn = NULL,
                            grid_size = 1000,
+                           use_survey = TRUE,
                            survey_dt,
                            survey_fn = NULL,
                            survey_lat = NULL,
@@ -111,7 +112,6 @@ geolink_chirps <- function(time_unit,
 
   name_set <- paste0("rainfall_", time_unit, name_count)
 
-
   ## create the name for the variables
 
   dt <- postdownload_processor(shp_dt = shp_dt,
@@ -127,11 +127,9 @@ geolink_chirps <- function(time_unit,
                                survey_crs = survey_crs,
                                name_set = name_set)
 
-
   print("Process Complete!!!")
 
   return(dt)
-
 
 }
 
@@ -295,7 +293,7 @@ geolink_ntl <- function(time_unit = "annual",
                                survey_crs = survey_crs,
                                name_set = name_set)
 
-  print("Process Complete!!!")
+    print("Process Complete!!!")
 
   return(dt)
 
