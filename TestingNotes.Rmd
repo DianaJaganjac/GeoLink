@@ -1,0 +1,57 @@
+Testing Mac New Branch: Has 3 code for 3 tests (Chirps, Stata, NTL). Tests can be run independently through calling the file or as a set
+
+Stata tests call files added to the testing folder
+
+General needs: -NTL: not working yet for monthly -Output consistency: Not getting a consistent output between the NTL, Chirps, and Stata functions in terms of columns represented/number of observations
+
+Personal to-do's -add more error checks for Stata and NTL -try with different data set
+
+Following Fixes are important: \
+\
+R/Geolink.mach.R
+
+```{r}
+###Line 118
+raster_objs= raster objs,
+shp_fn = shp_dt
+#changed to 
+raster_objs= raster objs,
+shp_fn = shp_fn
+##explanation: used shp_fn code when it should be null, creating errors
+```
+
+R/zonalstats_plugin.R
+
+```{r}
+###Line 228 
+shp_dt <- Reduce(merge, shp_dt)	
+#changed to: 
+
+#explanation: the reduce was making shp_dt null, so it breaks the code. Without it, Chirps does appear to have multiple copies of columns so need to look at alternatives 
+
+###line 337
+return (shp_dt)
+##moved to line 321 ( after name_set=name_set) so shp_dt will actually be returned in the output window 
+```
+
+```{r}
+###Line 325 
+if (!missing(survey_dt)) {
+survey_dt <- st_transform(x = survey_dt,	    
+crs = st_crs(shp_dt)$wkt)
+
+#changed to 
+if (!missing(survey_dt)) {
+survey_dt <- st_transform(survey_dt,
+crs = st_crs(raster_objs[[1]])$input)
+##explanation: error where there was no CRS recognized
+```
+
+R/download_generalhelpers
+
+```{r}
+###Line 42- added timeout 
+tools::file_ext(url))
+options(timeout=400)
+##explanation: need timeout to be able to download larger files for NTL 
+```
