@@ -44,3 +44,4 @@ test_that("annual ntl data is correct", {
   expect_equal(sumradians, 199.21488)
 
 })
+

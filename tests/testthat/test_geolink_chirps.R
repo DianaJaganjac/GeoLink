@@ -55,7 +55,7 @@ test_that("annual rainfall data is correct", {
 })
 
 #Step 6: Create pathways for possible errors
-testthat_print("checking for expected output")
+testthat_print("checking for expected errors")
 test_that("code gives expected errors)", {
   #test if time_unit is null
   expect_error(geolink_chirps(time_unit = "null",
